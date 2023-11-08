@@ -12,8 +12,6 @@ def get_resources_by_uri(uri):
     all_entries = []
     consecutive_errors = 0
 
-    misc_tools.log(f"get resources by uri - {uri}", True)
-
     while get_more:
         response = requests.get(uri)
 
@@ -40,6 +38,11 @@ def get_resources_by_uri(uri):
         elif response.status_code == 420:
             log_str = f"{response.status_code} - rate limited, waiting 1 minute..."
             sleep_time = 60
+
+        elif response.status_code == 400:
+            log_str = f"{response.status_code} - invalid pagination values, aborting with total of {len(all_entries)}"
+            sleep_time = 1
+            get_more = False
 
         else:
             consecutive_errors += 1
