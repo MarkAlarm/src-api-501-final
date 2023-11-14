@@ -53,6 +53,7 @@ def main():
     max_time_input = ""
     valid_min = False
     valid_max = False
+
     while not (valid_min and valid_max):
         min_time_input = input("Min time:\n")
         max_time_input = input("Max time:\n")
@@ -62,6 +63,15 @@ def main():
             misc_tools.log("Invalid min time format", True)
         if not valid_max:
             misc_tools.log("Invalid max time format", True)
+
+        if valid_min and valid_max:
+            temp_min = misc_tools.get_seconds_from_formatted_time(min_time_input)
+            temp_max = misc_tools.get_seconds_from_formatted_time(max_time_input)
+
+            if temp_min >= temp_max:
+                valid_min = False
+                valid_max = False
+                misc_tools.log("Min longer than max", True)
 
     min_time_seconds = misc_tools.get_seconds_from_formatted_time(min_time_input)
     max_time_seconds = misc_tools.get_seconds_from_formatted_time(max_time_input)
