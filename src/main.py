@@ -78,6 +78,25 @@ def main():
 
     final_list = []
 
+    valid_limit = False
+    limit = float("inf")
+
+    while not valid_limit:
+        limit = input("How many categories do you want to limit your search to? Put a negative number to search all.\n")
+
+        try:
+            limit = int(limit)
+
+            if limit < 0:
+                limit = float("inf")
+
+            valid_limit = True
+        except ValueError:
+            pass
+
+        if not valid_limit:
+            print("Invalid limit entered")
+
     misc_tools.log("Searching SRC for runs that fit the specified requirements...", True)
 
     for platform_id in platform_ids:
@@ -138,10 +157,22 @@ def main():
                                 len(run_times)
                             ))
 
+                if len(final_list) >= limit:
+                    break
+
+            if len(final_list) >= limit:
+                break
+
+        if len(final_list) >= limit:
+            break
+
     final_list = sorted(final_list, key=lambda x: x[4])
 
     if len(final_list) == 0:
         print("No games/categories given desired parameters")
+    else:
+        print(f"Found {len(final_list)} categories! Formatted as:")
+        print("Game - Category | Fastest to Slowest | Median / Average")
 
     for entry in final_list:
         min_formatted = misc_tools.get_formatted_time_from_seconds(entry[2])
