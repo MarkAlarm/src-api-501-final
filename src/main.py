@@ -95,7 +95,7 @@ def main():
             pass
 
         if not valid_limit:
-            print("Invalid limit entered")
+            misc_tools.log("Invalid limit entered", True)
 
     misc_tools.log("Searching SRC for runs that fit the specified requirements...", True)
 
@@ -169,10 +169,10 @@ def main():
     final_list = sorted(final_list, key=lambda x: x[4])
 
     if len(final_list) == 0:
-        print("No games/categories given desired parameters")
+        misc_tools.log("No games/categories given desired parameters", True)
     else:
-        print(f"Found {len(final_list)} categories! Formatted as:")
-        print("Game - Category | Fastest to Slowest | Median / Average")
+        misc_tools.log(f"Found {len(final_list)} categories! Formatted as:", True)
+        misc_tools.log("Game - Category | Fastest to Slowest | Median / Average", True)
 
     for entry in final_list:
         min_formatted = misc_tools.get_formatted_time_from_seconds(entry[2])
@@ -180,8 +180,9 @@ def main():
         median_formatted = misc_tools.get_formatted_time_from_seconds(entry[4])
         average_formatted = misc_tools.get_formatted_time_from_seconds(entry[5])
 
-        print(f"{entry[0]} - {entry[1]} | "
-              f"{min_formatted} to {max_formatted} | {median_formatted} / {average_formatted}")
+        misc_tools.log(f"{entry[0]} - {entry[1]} | "
+                       f"{min_formatted} to {max_formatted} | {median_formatted} / {average_formatted}",
+                       True)
 
 
 if __name__ == "__main__":
