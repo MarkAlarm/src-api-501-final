@@ -4,10 +4,20 @@ import misc_tools
 
 
 def get_resources_by_type(resource_type):
+    """
+    Basically just an extension of get_resources_by_uri
+    :param resource_type: (Plural) what type to get from speedrun.com
+    :return: List of that type
+    """
     return get_resources_by_uri(f"https://www.speedrun.com/api/v1/{resource_type}?max=200")
 
 
 def get_resources_by_uri(uri):
+    """
+    Gets all the resources listed by a given speedrun.com URI
+    :param uri: The URI of the resources
+    :return: List of resources
+    """
     get_more = True
     all_entries = []
     consecutive_errors = 0
@@ -56,3 +66,27 @@ def get_resources_by_uri(uri):
         misc_tools.log(f"{log_str}", True)
 
     return all_entries
+
+
+def get_resource_by_uri(uri):
+    """
+    Gets an individual resource by a given speedrun.com URI
+    :param uri: The URI of the resource
+    :return: The resource
+    """
+    response = requests.get(uri)
+
+    if response.status_code == 200:
+        json = response.json()
+        data = json["data"]
+
+        log_str = f"{response.status_code} - ok"
+
+    else:
+        data = None
+
+        log_str = f"{response.status_code} - unknown error"
+
+    misc_tools.log(f"{log_str}", True)
+
+    return data
